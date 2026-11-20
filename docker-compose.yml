@@ -1,0 +1,40 @@
+services:
+  php:
+    build: .
+    container_name: l35_php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.4
+    container_name: l35_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: l35_pizzeria
+      MYSQL_USER: pizzeria
+      MYSQL_PASSWORD: pizzeria
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./partenza.sql:/docker-entrypoint-initdb.d/partenza.sql:ro
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: l35_phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8081:80"
+
+volumes:
+  mysql_data:
