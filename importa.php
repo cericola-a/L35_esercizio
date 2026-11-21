@@ -36,11 +36,11 @@ while (($riga = fgetcsv($aperturaFile, 0, ",", '"', "")) !== false) {
 
     // Controllo che i dati siano validi
     if (
-        count($riga) !== 3 ||
-        trim($riga[0]) === '' ||
-        trim($riga[1]) === '' ||
-        !is_numeric($riga[2]) ||
-        (float)$riga[2] <= 0
+        count($riga) !== 3 || //controllo se il contenuto dell'array riga contiene un numero di elementi diverso da 3
+        trim($riga[0]) === '' || //controllo se il valore all'indice 0 è una stringa vuota dopo che l'ho pulita da eventuali spazi prima e dopo
+        trim($riga[1]) === '' ||//stesso controllo di prima però sul secondo elemento dell'array
+        !is_numeric($riga[2]) || //funzione che aiuta a capire se è un numero
+        (float)$riga[2] <= 0 //controllo se è un decimale ed è inferiore o uguale 0
     ) {
 
         $errori[] = "Riga $numeroRiga: dati mancanti o non validi";
@@ -65,6 +65,8 @@ fclose($aperturaFile);
 
 ?>
 
+
+<!--SEMPLICE HTML PER IL CONTROLLO VISIVO DELL'IMPORTAZIONE-->
 <h2>Risultato importazione</h2>
 
 <p>Numero di pizze importate: <?= $importate ?></p>
